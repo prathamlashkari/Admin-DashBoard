@@ -3,6 +3,12 @@ import { FaSearch } from "react-icons/fa";
 import { CiBellOn } from "react-icons/ci";
 import img from '../assets/userpic.png'
 import { HiTrendingDown, HiTrendingUp } from "react-icons/hi";
+import data from '../assets/data.json'
+import { Chart } from "react-chartjs-2";
+import { BarChart, DoughnutChart } from "../Component/Chart";
+import { BiMaleFemale } from "react-icons/bi";
+
+
 export default function Dashboard() {
   return (
     <div className="adminContainer">
@@ -25,6 +31,31 @@ export default function Dashboard() {
           <WidgetItems heading="Products" value={1000}  percent={30} color="rgba(76 0 255)" amount={false}/>
 
         </section>
+    <section className="graph-container">
+      
+      <div className="revenue-chart">
+        <h2>Revenue & Transaction</h2>
+       <BarChart data_1={[300,144,433,655,237,755,190]} data_2 = {[200,144,343,556,778,455,990]} title_1="Revenue" title_2="Transaction" bgColor_1="rgb(0,155,255)" bgColor_2="rgb(53,162,235,0.8)" />
+      </div>
+      <div className="dashboard-categories">
+        <h2>Inventory</h2>
+        <div>
+          {
+            data.categories.map((i)=>( <CategoryItem heading={i.heading} key={i.value} value={i.value} color={`hsl(${i.value*4} ,100% , 50%)` }/>))
+          }
+         
+        </div>
+      </div>
+    </section>
+
+          <section className="transaction-container">
+            <div className="gender-chart">
+              <h2>Gender Ratio</h2>
+              <DoughnutChart  labels={["Female", "Male"]} data={[12,19]} backgroundColor={["hsl(340,82%,56%)" ,"rgba(53,162,235,0.8)"]}  cutout={90}/>
+             <p> <BiMaleFemale/></p>
+            </div>
+
+          </section>
        </main>
     </div>
   )
@@ -60,3 +91,22 @@ const WidgetItems = ({heading , value , percent , color , amount}:WidgetItemProp
 
 
 
+interface CategoryItempProps{
+   color : string;
+   value : number;
+   heading : string;
+}
+
+const CategoryItem =({color,value,heading}:CategoryItempProps)=>(
+
+   <div className="category-item">
+    {heading}
+    <div>
+      <div style={{
+        backgroundColor:color,
+        width:`${value}%`
+      }}></div>
+    </div>
+    <span>{value}%</span>
+   </div>
+)
