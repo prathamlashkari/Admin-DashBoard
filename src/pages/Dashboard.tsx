@@ -4,9 +4,9 @@ import { CiBellOn } from "react-icons/ci";
 import img from '../assets/userpic.png'
 import { HiTrendingDown, HiTrendingUp } from "react-icons/hi";
 import data from '../assets/data.json'
-import { Chart } from "react-chartjs-2";
 import { BarChart, DoughnutChart } from "../Component/Chart";
 import { BiMaleFemale } from "react-icons/bi";
+import DashbaordTable from "../Component/Dashboardtable";
 
 
 export default function Dashboard() {
@@ -54,7 +54,7 @@ export default function Dashboard() {
               <DoughnutChart  labels={["Female", "Male"]} data={[12,19]} backgroundColor={["hsl(340,82%,56%)" ,"rgba(53,162,235,0.8)"]}  cutout={90}/>
              <p> <BiMaleFemale/></p>
             </div>
-
+            <DashbaordTable  data={data.transaction} />
           </section>
        </main>
     </div>
