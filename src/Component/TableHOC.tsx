@@ -1,4 +1,5 @@
-import { useTable, Column, TableOptions } from "react-table";
+import { useTable, Column, TableOptions, useSortBy,usePagination } from "react-table";
+import { FaChevronUp ,FaChevronDown} from "react-icons/fa";
 
 
 
@@ -7,9 +8,13 @@ function TableHoc<T extends {}>(columns : Column<T>[], data :T[] , heading:strin
   return function Hoc()
   {
     const option : TableOptions<T> ={
-      columns,data,
+      columns,
+      data,
+      initialState:{
+        pageSize : 5,
+      },
     };
-    const {getTableBodyProps , getTableProps , headerGroups , rows,prepareRow} = useTable(option);
+    const {getTableBodyProps , getTableProps , headerGroups ,page,prepareRow} = useTable(option,useSortBy,usePagination);
 
 
     return (
@@ -18,12 +23,15 @@ function TableHoc<T extends {}>(columns : Column<T>[], data :T[] , heading:strin
        <table className="table" >
         <thead>
           {
-            headerGroups.map((headerGroup)=> (
-              <tr {...headerGroup.getHeaderGroupProps()}>
+            headerGroups.map((hg)=> (
+              <tr {...hg.getHeaderGroupProps()}>
                   {
-                    headerGroup.headers.map((column)=>(
-                        <th {...column.getHeaderProps()}>
+                    hg.headers.map((column:any)=>(
+                        <th {...column.getHeaderProps(column.getSortByToggleProps())}>
                           {column.render("Header")}
+                          {
+                            column.isSorted && <span> {" "} {column.isSortedDesc ? <FaChevronUp/>:<FaChevronDown/> }</span>
+                          }
                         </th>
                     ))
                   }
@@ -33,11 +41,11 @@ function TableHoc<T extends {}>(columns : Column<T>[], data :T[] , heading:strin
         </thead>
         <tbody {...getTableBodyProps()}>
           {
-            rows.map((row) =>{
+            page.map((row:any) =>{
               prepareRow(row);
               return <tr {...row.getRowProps() }>
                 {
-                  row.cells.map((cell) =>(
+                  row.cells.map((cell:any) =>(
                     <td {...cell.getCellProps()}>{cell.render("Cell")} </td>
                   ))
                 }
