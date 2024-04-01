@@ -14,7 +14,7 @@ function TableHoc<T extends {}>(columns : Column<T>[], data :T[] , heading:strin
         pageSize : 5,
       },
     };
-    const {getTableBodyProps , getTableProps , headerGroups ,page,prepareRow} = useTable(option,useSortBy,usePagination);
+    const {getTableBodyProps  , headerGroups ,page,prepareRow ,nextPage,canNextPage,previousPage,canPreviousPage ,pageCount,state:{pageIndex}} = useTable(option,useSortBy,usePagination);
 
 
     return (
@@ -54,6 +54,14 @@ function TableHoc<T extends {}>(columns : Column<T>[], data :T[] , heading:strin
           }
         </tbody>
        </table>
+       {
+        showPagination &&
+        <div className="Table-pagination">
+          <button disabled={!canPreviousPage}  onClick={previousPage}>Prev</button>
+          <span>{`${pageIndex+1} page of ${pageCount}`}</span>
+          <button disabled={!canNextPage}  onClick={nextPage}>Next</button>
+        </div>
+       }
       </div>
     )
   };

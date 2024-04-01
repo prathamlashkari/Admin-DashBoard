@@ -129,7 +129,7 @@ const arr: ProdutItemProp[] = [
 export default function Product() {
 
    const [data] = useState<ProdutItemProp[]>([])
-  const Table = useCallback(TableHoc<ProdutItemProp>(columns,arr,"Products","dashboard-products"),[]);
+  const Table = useCallback(TableHoc<ProdutItemProp>(columns,arr,"Products","dashboard-products", true),[]);
   return (
     <div className="adminContainer">
     <AdminSidebar/>
