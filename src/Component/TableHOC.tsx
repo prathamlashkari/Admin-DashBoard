@@ -3,7 +3,7 @@ import { FaChevronUp ,FaChevronDown} from "react-icons/fa";
 
 
 
-function TableHoc<T extends {}>(columns : Column<T>[], data :T[] , heading:string , containerClassname:string)
+function TableHoc<T extends {}>(columns : Column<T>[], data :T[] , heading:string , containerClassname:string, showPagination = false)
 {
   return function Hoc()
   {
