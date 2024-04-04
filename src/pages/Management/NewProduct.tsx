@@ -10,6 +10,16 @@ export default function NewProduct() {
 
    const changeImage =(e : ChangeEvent<HTMLInputElement>)=>{
 
+
+       const file : File | undefined = e.target.files?.[0];
+        const reader = new FileReader();
+      if(file)
+      {
+         reader.readAsDataURL(file);
+         reader.onload =()=>{
+          if(typeof reader.result === "string") setPhoto(reader.result);
+         }
+      }
    }
   return (
     <div className="adminContainer">

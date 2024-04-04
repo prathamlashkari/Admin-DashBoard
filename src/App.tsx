@@ -8,7 +8,7 @@ const Product = lazy(()=>import('./pages/Product'))
 const Transaction = lazy(()=>import('./pages/Transaction'))
 const NewProduct = lazy(()=>import('./pages/Management/NewProduct'))
 const ProcductManagement = lazy(()=>import('./pages/Management/ProcductManagement'))
-const TransactionManagement = lazy(()=>import('./pages/Management/ProcductManagement'))
+const TransactionManagement = lazy(()=>import('./pages/Management/TransactionManagement'))
 
 function App() {
   return (
