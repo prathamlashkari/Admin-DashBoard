@@ -8,9 +8,12 @@ import {
   Legend,
   ChartData,
   ChartOptions,
-  ArcElement
+  ArcElement,
+  PointElement,
+  LineElement,
+  Filler
 } from 'chart.js';
-import { Bar,Doughnut  } from 'react-chartjs-2';
+import { Bar,Doughnut, Line, Pie  } from 'react-chartjs-2';
 
 
 ChartJS.register(
@@ -20,12 +23,16 @@ ChartJS.register(
   Title,
   Tooltip,
   Legend,
-  ArcElement
+  ArcElement,
+  PointElement,
+  LineElement,
+  Filler
 );
 
 
 interface BarChartsProps{
   horizontal?:boolean;
+  legends?: boolean;
   data_1:number[];
   data_2:number[];
   title_1:string;
@@ -36,13 +43,13 @@ interface BarChartsProps{
 }
 export const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
 
-export const BarChart =({horizontal=false , data_1 ,data_2 , title_1 , title_2 , bgColor_1 , bgColor_2,labels=months}:BarChartsProps)=>{
+export const BarChart =({legends =true,horizontal=false , data_1 ,data_2 , title_1 , title_2 , bgColor_1 , bgColor_2,labels=months}:BarChartsProps)=>{
    const options:ChartOptions<'bar'> = {
     responsive: true,
     indexAxis:horizontal?"y":"x",
     plugins: {
       legend: {
-        display:true,
+        display:legends,
       },
       title: {
         display: false,
@@ -88,7 +95,7 @@ export const BarChart =({horizontal=false , data_1 ,data_2 , title_1 , title_2 ,
     ],
   };
   
-  return <Bar options={options} data={data} />;
+  return <Bar width={horizontal?"200px":""} options={options} data={data} />;
 }
 
 
@@ -106,7 +113,6 @@ interface DoughnutChartProps{
 export const DoughnutChart=({labels , data  , backgroundColor ,  cutout , legends = true , offset,}:DoughnutChartProps)=>{
 
     const doughnoutData : ChartData<"doughnut",number[],string> = {
-
       labels,
       datasets:[{
         data,
@@ -128,8 +134,95 @@ export const DoughnutChart=({labels , data  , backgroundColor ,  cutout , legend
        },
        cutout,
     };
-
-
-
     return <Doughnut  data={doughnoutData} options={doughnoutOption} />
+
+}
+
+// Pie chart
+interface PieChartProps{
+  labels:string[];
+  data:number[];
+  backgroundColor:string[];
+  offset?:number[];
+}
+
+export const PieChart=({labels , data  , backgroundColor, offset,}:PieChartProps)=>{
+
+    const pieData : ChartData<"pie",number[],string> = {
+      labels,
+      datasets:[{
+        data,
+        backgroundColor,
+        borderWidth:1,
+        offset,
+      }],
+    };
+    const pieOption : ChartOptions<"pie"> = {
+       responsive : true,
+       plugins:{
+          legend:{
+            display:false,
+          },
+       },
+    };
+    return <Pie  data={pieData} options={pieOption} />
+
+}
+
+
+// Line charts
+
+
+
+interface LineProps{
+  data:number[];
+  label:string;
+  backgroundColor:string;
+  borderColor:string;
+  labels?:string[];
+}
+
+export const LineChart =({ data  , label , backgroundColor , borderColor,labels=months}:LineProps)=>{
+   const options:ChartOptions<'line'> = {
+    responsive: true,
+    plugins: {
+      legend: {
+        display:false,
+      },
+      title: {
+        display: false,
+        text: 'Chart.js Bar Chart',
+      },
+    },  
+    scales:{
+     y:{
+      beginAtZero:true,
+      grid:{
+        display:false,
+      },
+     },
+     x:{
+      beginAtZero:true,
+      grid:{
+        display:false,
+      },
+     }  
+    }
+  };
+  
+  
+   const lineChartData:ChartData<"line",number[],string> = {
+    labels,
+    datasets: [
+      {
+        fill:true,
+        label,
+        data,
+        backgroundColor,
+        borderColor
+      },
+    ],
+  };
+  
+  return <Line  options={options} data={lineChartData} />;
 }
