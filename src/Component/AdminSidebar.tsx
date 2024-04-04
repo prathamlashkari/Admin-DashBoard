@@ -1,28 +1,59 @@
-import { RiDashboardFill } from 'react-icons/ri'
-import { Link, Location, useLocation } from 'react-router-dom'
-import { MdOutlineProductionQuantityLimits,MdAttachMoney } from "react-icons/md";
-import { IoIosMan } from "react-icons/io";
+import { useEffect, useState } from 'react';
 import { IconType } from 'react-icons';
 import { BsFileBarGraph } from "react-icons/bs";
-import { FaChartPie ,FaTicketAlt} from "react-icons/fa";
+import { FaChartPie, FaTicketAlt } from "react-icons/fa";
 import { FaChartLine } from "react-icons/fa6";
-import { TiStopwatch } from "react-icons/ti";
+import { HiMenuAlt4 } from 'react-icons/hi';
 import { ImCoinDollar } from "react-icons/im";
+import { IoIosMan } from "react-icons/io";
+import { MdAttachMoney, MdOutlineProductionQuantityLimits } from "react-icons/md";
+import { RiDashboardFill } from 'react-icons/ri';
+import { TiStopwatch } from "react-icons/ti";
+import { Link, Location, useLocation } from 'react-router-dom';
 
 export default function AdminSidebar() {
   const location  = useLocation();
+
+  const [modal,setModal] = useState<boolean>(false);
+  const [phoneActive , setPhoneActive] = useState<boolean>(window.innerWidth<1100);
+
+
+  const resizeHandeler =()=>{
+    setPhoneActive(window.innerWidth<1100);
+  }
+  useEffect(()=>{
+
+    window.addEventListener('resize',resizeHandeler);
+
+    return ()=>{
+      window.removeEventListener('resize',resizeHandeler);
+    }
+  },[])
   return (
-  <aside>
+    <>
+    {
+      phoneActive && <button id="hamburger" onClick={()=>setModal(true)}><HiMenuAlt4/></button>
+    }
+  <aside  style={phoneActive ? {
+    width : "20rem",
+    height : "100vh",
+    position:"fixed",
+    top : 0,
+    left : modal ? "0" : "-20rem",
+    transition:"all 0.5s"
+  }:{}} >
     <h2>Logo.</h2>
     <DivOne location={location}/>
     <DivTwo location={location}/>
-    <DivThree location={location}/>
+    <DivThree location={location} />
+    {
+          phoneActive && 
+          <button id='close-tab'onClick={()=>setModal(false)} >Close</button>
+      }
   </aside>
+  </>
   )
 };
-
-
-
 const DivOne =({location}:{location:Location})=>(
   <div>
       <h5>Dashboard</h5>
@@ -44,7 +75,8 @@ const DivTwo =({location}:{location:Location})=>(
       </ul>
     </div>
 )
-const DivThree =({location}:{location:Location})=>(
+const DivThree =(
+  {location }:{location:Location})=>(
   <div>
       <h5>Apps</h5>
       <ul>
@@ -52,6 +84,7 @@ const DivThree =({location}:{location:Location})=>(
          <Li url="/admin/Apps/Cupon" text="Cupon" Icon={FaTicketAlt} location={location}/>
          <Li url="/admin/Apps/Toss" text="Toss" Icon={ImCoinDollar} location={location}/>  
       </ul>
+     
     </div>
 )
 
